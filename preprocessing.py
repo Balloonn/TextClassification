@@ -3,7 +3,7 @@ from collections import defaultdict, Counter
 from operator import itemgetter
 from pickle_file_operator import PickleFileOperator
 from params import TRAIN_FILE_PATH, CHAR_NUM, CHARS_PK_PATH, LABELS_PK_PATH
-
+from random import shuffle
 
 class FilePreprocessing(object):
     def __init__(self, n):
@@ -18,7 +18,10 @@ class FilePreprocessing(object):
         for content in train_pd['content']:
             for key, value in Counter(content).items():
                 character_dict[key] += value
-
+        # # 不排序
+        # sort_char_list = [(k, v) for k, v in character_dict.items()]
+        # shuffle(sort_char_list)
+        # 排序
         sort_char_list = sorted(character_dict.items(), key=itemgetter(1), reverse=True)
         print('total {} words in character_dict'.format(len(sort_char_list)))
         print('top 5 characters: ', sort_char_list[:5])

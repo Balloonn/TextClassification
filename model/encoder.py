@@ -1,9 +1,8 @@
 import torch.nn as nn
-from utils_model import clones, SublayerConnection, LayerNorm
 
 
 class EncoderLayer(nn.Module):
-    def __init__(self, d_model, attn, feed_forward, dropout=0.1):
+    def __init__(self, clones, SublayerConnection, d_model, attn, feed_forward, dropout=0.1):
         super(EncoderLayer, self).__init__()
         self.attn = attn
         self.feed_forward = feed_forward
@@ -16,7 +15,7 @@ class EncoderLayer(nn.Module):
 
 
 class Encoder(nn.Module):
-    def __init__(self, n, encoder_layer):
+    def __init__(self, clones, LayerNorm, n, encoder_layer):
         super(Encoder, self).__init__()
         self.encoder_layers = clones(encoder_layer, n)
         self.layer_norm = LayerNorm(encoder_layer.d_model)

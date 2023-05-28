@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
 
 
 class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, dropout, max_len=5000):
+    def __init__(self, d_model, dropout, vocab_size=5000):
         super(PositionalEncoding, self).__init__()
-        pe = torch.zeros(max_len, d_model)
-        pos = torch.arange(0, max_len).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2, dtype=torch.float) *
-                             (-math.log(10000.0) / d_model))
+        pe = torch.zeros(vocab_size, d_model)
+        pos = torch.arange(0, vocab_size).unsqueeze(1)
+        div_term = torch.exp(torch.arange(0, d_model, 2, dtype=torch.float)
+                             * (-math.log(10000.0) / d_model))
         pe[:, 0::2] = torch.sin(pos.float() * div_term)
         pe[:, 1::2] = torch.cos(pos.float() * div_term)
         pe = pe.unsqueeze(0)

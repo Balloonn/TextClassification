@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from pickle_file_operator import PickleFileOperator
 from params import *
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, random_split
 import torch
 
 
@@ -25,8 +25,8 @@ def load_csv_file(file_path):
 
 def text_feature(content, labels, char_dict, label_dict):
     samples, y_real = [], []
-    for s_content, s_label in zip(content, labels):
-        samples.append(label_dict[s_content])
+    for s_label, s_content in zip(labels, content):
+        y_real.append(label_dict[s_label])
         train_sample = []
         for char in s_content:
             if char in char_dict:
@@ -45,6 +45,16 @@ class CSVDataset(Dataset):
         label_dict, char_dict = load_pk_file()
         content, labels = load_csv_file(file_path)
         samples, y_real = text_feature(content, labels, char_dict, label_dict)
-        self.x = torch.from_numpy(np.array(samples))
+        self.x = torch.from_numpy(np.array(samples)).long()
         self.y = torch.from_numpy(np.array(y_real))
 
+    def __len__(self):
+        return len(self.x)
+
+    def __getitem__(self, idx):
+        return [self.x[idx], self.y[idx]]
+
+    def get_splits(self, n_test=0.3):
+        test_size = round(n_test * len(self.x))
+        train_size = len(self.x) - test_size
+        return random_split(self, [train_size, test_size])
