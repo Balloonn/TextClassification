@@ -54,7 +54,7 @@ if __name__ == '__main__':
                               trg_vocab=5,
                               d_model=300,
                               d_ff=128,
-                              n_heads=6,
+                              n_heads=10,
                               n_layers=3,
                               dropout=0.1)
     num_params = sum(param.numel() for param in model.parameters())
