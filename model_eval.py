@@ -14,7 +14,8 @@ model = T.load('sgns_cls.pth')
 
 label_dict, char_dict = load_pk_file()
 label_dict_rev = {v: k for k, v in label_dict.items()}
-print(label_dict)
+
+
 def eval(text):
     labels, contents = ['汽车'], [text]
     samples, y_true = text_feature(contents, labels, char_dict, label_dict)

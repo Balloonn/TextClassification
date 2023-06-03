@@ -12,6 +12,7 @@ model = KeyedVectors.load_word2vec_format(PRETRAINED_VECTOR_PATH,
                                           unicode_errors="ignore")
 pretrained_vector = torch.zeros(CHAR_NUM + 4, 300).float()
 
+
 for char, index in char_dict.items():
     if char in model.key_to_index:
         vector = model.get_vector(char)

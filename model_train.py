@@ -1,6 +1,4 @@
 import torch
-from numpy import argmax, vstack
-from sklearn.metrics import accuracy_score
 from torch.utils.data import DataLoader
 from utils import CSVDataset
 from params import *
@@ -33,8 +31,7 @@ class ModelTrainer(object):
             for x_batch, y_batch in train_dl:
                 y_batch = y_batch.long()
                 optimizer.zero_grad()
-                x_batch_mask = torch.Tensor((x_batch != PAD_NO)).int().unsqueeze(-2)
-                y_pred = model(x_batch, x_batch_mask)
+                y_pred = model(x_batch, None)
                 loss = CrossEntropyLoss()(y_pred, y_batch)
                 loss.backward()
                 optimizer.step()
@@ -52,7 +49,7 @@ if __name__ == '__main__':
     model = _model.make_model(vocab_size=CHAR_NUM + 2,
                               pretrained_vector=pretrained_vector,
                               trg_vocab=5,
-                              d_model=300,
+                              d_model=256,
                               d_ff=128,
                               n_heads=10,
                               n_layers=3,
